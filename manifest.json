@@ -1,0 +1,11 @@
+{
+   "manifest_version": 1,
+   "name": "new tab ext",
+   "version": "1.0",
+   "author": "Sarah Joy Calpo",
+   "default_locale": "en",
+   "description": "A new tab chrome extension!",
+   "chrome_url_overrides" : {
+     "newTab": "index.html"
+   }
+ }
