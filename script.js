@@ -10,37 +10,27 @@ typeSpan.addEventListener( 'blur', function () {
     setData( 'type', typeSpan.innerHTML );
 });
 
-document.getElementById( 'count' ).innerHTML = tabCount;
+document.getElementById( 'count' ).innerHTML = tabCount || 'no';
 
 var pile = document.getElementById( 'tally' );
-var pileSize;
-if ( tabCount < 50 ) {
-    pile.style.width = '400px';
-    pileSize = 400;
-} else if ( tabCount < 100 ) {
-    pile.style.width = '600px';
-    pileSize = 600;
-} else {
-    pile.style.width = '90%';
-    pileSize = window.innerWidth - 200;
-}
-
+var pileDimensions = {};
+pileDimensions.width = (tabCount * 9) < 1000 ? tabCount * 9 : 1000;
+pileDimensions.heightMin = (400 - (tabCount * 3)) > 0 ? (400 - (tabCount * 3)) : 0;
+pile.style.width = pileDimensions.width;
 
 for( var i = 0; i < tabCount; i ++ ) {
-    var tally = document.createElement( 'li' );
-    tally.classList.add( 'delay' + i );
-    tally.style.width = randomNumber( 200, 40 ) + 'px';
-    tally.style.left = randomNumber( pileSize - 100, 0 ) + 'px';
+    var fry = document.createElement( 'li' );
+    fry.style.width = randomPx( 200, 40 );
+    fry.style.left = randomPx( pileDimensions.width, 0 );
 
-    var randTop = randomNumber( 500 ) + 'px';
-    tally.animate({ top: ['-1000px', randTop] }, { delay: i * 10, duration: 500, fill: 'forwards'});
+    var randTop = randomPx( 400, pileDimensions.heightMin );
+    fry.animate({ top: ['-1000px', randTop] }, { delay: i * 10, duration: 500, fill: 'forwards'});
 
-    document.getElementById( 'tally' ).appendChild( tally );
+    document.getElementById( 'tally' ).appendChild( fry );
 }
 
-
-
 // functions
+
 function setData ( keypath, data ) {
     localStorage.setItem( keypath, JSON.stringify( data ) );
 }
@@ -55,7 +45,7 @@ function getData ( keypath ) {
     return data;
 }
 
-function randomNumber ( max, min = 0 ) {
-    return Math.floor( Math.random() * ( max - min ) + min );
-    // reference: http://stackoverflow.com/questions/1527803/generating-random-whole-numbers-in-javascript-in-a-specific-range
+function randomPx ( max, min = 0 ) {
+    return Math.floor( Math.random() * ( max - min ) + min ) + 'px';
+    // reference: http://stackoverflow.com/questions/1527803/
 }
